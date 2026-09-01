@@ -23,7 +23,7 @@ import java.io.File;
 public final class pnChatPlugin extends JavaPlugin {
 
     public static final String SUPPORT_DISCORD = "https://discord.gg/rRbzq6cnc6";
-    private static final String GITHUB_REPOSITORY = "Dy6HiLa/pnChat";
+    private static final String GITHUB_REPOSITORY = "pnFolder/pnChat";
     private static final int BSTATS_PLUGIN_ID = 32607;
 
     private ChatMessageService messageService;
