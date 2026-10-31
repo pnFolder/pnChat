@@ -3,7 +3,7 @@ version: '${version}'
 main: ru.privatenull.pnChatPlugin
 api-version: '1.21'
 authors: [privatenull]
-softdepend: [Essentials, LiteBans, AdvancedBan, CMI, LuckPerms, PlaceholderAPI, pnBans]
+softdepend: [pnLibrary, Essentials, LiteBans, AdvancedBan, CMI, LuckPerms, PlaceholderAPI, pnBans]
 commands:
   pnchat:
     description: Управление pnChat
@@ -34,12 +34,17 @@ commands:
     permission-message: '§cНедостаточно прав.'
 permissions:
   pnchat.admin:
+    description: Перезагрузка pnChat, админ-чат и уведомления об обновлениях
     default: op
   pnchat.chatcolor:
+    description: Установка цвета чата игрока
     default: op
   pnchat.chatfont:
+    description: Установка стиля чата игрока
     default: op
   pnchat.nick:
+    description: Установка отображаемого ника игрока
     default: op
   pnchat.prefix:
+    description: Установка префикса игрока
     default: op

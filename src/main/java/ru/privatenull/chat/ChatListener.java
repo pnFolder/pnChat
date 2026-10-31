@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import ru.privatenull.pnChatPlugin;
 
 public class ChatListener implements Listener {
@@ -67,12 +66,5 @@ public class ChatListener implements Listener {
 
         plugin.getServer().getScheduler().runTask(plugin,
                 () -> messageService.dispatchLocalChat(null, player, cleaned));
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (plugin.getUpdateChecker() != null) {
-            plugin.getUpdateChecker().notifyAdminOnJoin(event.getPlayer());
-        }
     }
 }
