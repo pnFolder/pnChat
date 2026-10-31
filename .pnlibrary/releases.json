@@ -1,29 +1,5 @@
 {
   "schema": 1,
   "product": "pnchat",
-  "releases": [
-    {
-      "version": "1.1.0",
-      "channel": "stable",
-      "description": "Переход на отдельный плагин pnLibrary: обновления, метрики и диагностика теперь через него.",
-      "changelogUrl": "https://github.com/pnFolder/pnChat/blob/main/.pnlibrary/changelogs/1.1.0.md",
-      "publishedAt": "2026-11-01T12:00:00Z",
-      "api": {
-        "minimum": 1,
-        "maximum": 1
-      },
-      "artifacts": [
-        {
-          "file": "pnChat-1.1.0.jar",
-          "platform": "BUKKIT",
-          "java": {
-            "minimum": 21
-          },
-          "url": "https://github.com/pnFolder/pnChat/releases/download/v1.1.0/pnChat-1.1.0.jar",
-          "sha256": "cd550cea46778e9f86d28ba5b065e1050afc59f33f3923d29e632589c7f71d80",
-          "size": 426400
-        }
-      ]
-    }
-  ]
+  "releases": []
 }
