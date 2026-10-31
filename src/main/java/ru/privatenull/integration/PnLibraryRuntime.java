@@ -21,6 +21,7 @@ public final class PnLibraryRuntime {
     public static final String MINIMUM_VERSION = "0.0.1-dev.6";
     private static final String MODULE_ID = "pnchat";
     private static final int BSTATS_PROJECT_ID = 32607;
+    private static final String FASTSTATS_TOKEN = "7e4411d995e3aadd6f8f615ead5ba3d8";
     private static final String POLICY_SOURCE =
             "https://raw.githubusercontent.com/pnFolder/pnlibrary-policy/main/.pnlibrary/policies/PnChatPolicy.java";
     private static final String UPDATE_OWNER = "pnFolder";
@@ -57,7 +58,7 @@ public final class PnLibraryRuntime {
                             .onError(PolicyErrorAction.KEEP_RUNNING)
                             .support(PnLibraryIdentity.SUPPORT_URL)
                             .build())
-                    .metrics(metrics -> metrics.bStats(BSTATS_PROJECT_ID))
+                    .metrics(metrics -> metrics.bStats(BSTATS_PROJECT_ID).fastStats(FASTSTATS_TOKEN))
                     .diagnostics(owner.getDataFolder().toPath(), DiagnosticContainer.builder("pnchat")
                             .snapshot(diagnostics::get)
                             .configuration(DiagnosticConfiguration.builder("config.yml").build())
