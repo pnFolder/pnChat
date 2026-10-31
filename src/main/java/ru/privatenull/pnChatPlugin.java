@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bstats.bukkit.Metrics;
+import org.pnfolder.pnlibrary.bukkit.bootstrap.PnLibraryBootstrap;
 import ru.privatenull.chat.AdminChatService;
 import ru.privatenull.chat.ChatCommandExecutor;
 import ru.privatenull.chat.ChatFormatter;
@@ -14,28 +14,53 @@ import ru.privatenull.chat.ChatModerationService;
 import ru.privatenull.chat.ChatStyleCommandExecutor;
 import ru.privatenull.chat.ChatStyleService;
 import ru.privatenull.chat.ChatTabCompleter;
-import ru.privatenull.pnlibrary.lifecycle.PluginBanner;
-import ru.privatenull.pnlibrary.update.UpdateChecker;
-import ru.privatenull.pnlibrary.update.UpdateSettings;
+import ru.privatenull.bootstrap.PnLibraryLifecycleListener;
+import ru.privatenull.integration.PnLibraryRuntime;
 
 import java.io.File;
+import java.util.Map;
+import java.util.logging.Level;
 
 public final class pnChatPlugin extends JavaPlugin {
 
     public static final String SUPPORT_DISCORD = "https://discord.gg/rRbzq6cnc6";
-    private static final String GITHUB_REPOSITORY = "pnFolder/pnChat";
-    private static final int BSTATS_PLUGIN_ID = 32607;
 
     private ChatMessageService messageService;
     private ChatFormatter formatter;
     private ChatStyleService styleService;
     private ChatModerationService moderationService;
     private AdminChatService adminChatService;
-    private UpdateChecker updateChecker;
+    private boolean pnLibraryReady;
+    private PnLibraryRuntime pnRuntime;
     private FileConfiguration messagesConfig;
 
     @Override
+    public void onLoad() {
+        try {
+            pnLibraryReady = PnLibraryBootstrap.ensureInstalled(this, PnLibraryRuntime.MINIMUM_VERSION);
+        } catch (Throwable failure) {
+            getLogger().log(Level.SEVERE,
+                    "Не удалось автоматически подготовить pnLibrary. pnChat не будет запущен.", failure);
+        }
+    }
+
+    @Override
     public void onEnable() {
+        if (!pnLibraryReady) {
+            getLogger().severe("pnLibrary не подготовлена: проверьте доступ к GitHub и ошибку загрузки выше.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        try {
+            pnRuntime = PnLibraryRuntime.connect(this);
+        } catch (Throwable failure) {
+            getLogger().log(Level.SEVERE, "pnLibrary не удалось включить или подключить к pnChat.", failure);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        getServer().getPluginManager().registerEvents(new PnLibraryLifecycleListener(this), this);
+        pnRuntime.register(this::diagnostics);
+
         saveDefaultConfig();
         saveResource("messages.yml", false);
         saveResource("allowed-links.txt", false);
@@ -61,18 +86,21 @@ public final class pnChatPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new ChatListener(messageService, moderationService, adminChatService, this), this);
 
-        setupUpdateChecker();
-        new Metrics(this, BSTATS_PLUGIN_ID);
-        PluginBanner.enabled(this, SUPPORT_DISCORD);
+        pnRuntime.enabled(getConfig().getDouble("radius", 100));
         logStartupDetails();
     }
 
     @Override
     public void onDisable() {
-        if (updateChecker != null) {
-            updateChecker.cancel();
+        PnLibraryRuntime closing = pnRuntime;
+        pnRuntime = null;
+        if (closing != null) {
+            try {
+                closing.close();
+            } catch (Exception exception) {
+                getLogger().log(Level.WARNING, "Не удалось корректно закрыть контекст pnLibrary", exception);
+            }
         }
-        PluginBanner.disabled(this, SUPPORT_DISCORD);
     }
 
     public void reloadPlugin() {
@@ -84,9 +112,6 @@ public final class pnChatPlugin extends JavaPlugin {
         moderationService.reloadConfig();
         moderationService.loadLists();
         adminChatService.reloadConfig();
-        if (updateChecker != null) {
-            updateChecker.restart(updateSettings());
-        }
         getLogger().info("pnChat: конфигурация перезагружена.");
     }
 
@@ -110,17 +135,10 @@ public final class pnChatPlugin extends JavaPlugin {
         return adminChatService;
     }
 
-    public UpdateChecker getUpdateChecker() {
-        return updateChecker;
-    }
-
-    private void setupUpdateChecker() {
-        updateChecker = new UpdateChecker(this, updateSettings());
-        updateChecker.start();
-    }
-
-    private UpdateSettings updateSettings() {
-        return new UpdateSettings(true, GITHUB_REPOSITORY, "pnchat.admin", 6L, SUPPORT_DISCORD);
+    private Map<String, Object> diagnostics() {
+        return Map.of(
+                "version", getDescription().getVersion(),
+                "radius", getConfig().getDouble("radius", 100));
     }
 
     private PluginCommand requireCommand(String name) {
@@ -141,6 +159,5 @@ public final class pnChatPlugin extends JavaPlugin {
         getLogger().info("Локальный чат: радиус " + getConfig().getInt("radius", 100) + " блоков.");
         getLogger().info("Глобальный чат: префикс ! перед сообщением.");
         getLogger().info("Упоминания: @ник и автоупоминания по нику онлайн-игрока.");
-        getLogger().info("Анонимная статистика bStats: ID " + BSTATS_PLUGIN_ID + ".");
     }
 }
