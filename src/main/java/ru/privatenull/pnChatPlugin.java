@@ -86,7 +86,7 @@ public final class pnChatPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new ChatListener(messageService, moderationService, adminChatService, this), this);
 
-        pnRuntime.enabled(getConfig().getDouble("radius", 100));
+        pnRuntime.started(getConfig().getDouble("radius", 100), 5);
         logStartupDetails();
     }
 

@@ -3,6 +3,7 @@ package ru.privatenull.integration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pnfolder.pnlibrary.api.diagnostics.DiagnosticConfiguration;
 import org.pnfolder.pnlibrary.api.diagnostics.DiagnosticContainer;
+import org.pnfolder.pnlibrary.api.logging.MessageBox;
 import org.pnfolder.pnlibrary.api.plugin.ModuleContext;
 import org.pnfolder.pnlibrary.api.plugin.PluginRegistration;
 import org.pnfolder.pnlibrary.api.remote.PolicyErrorAction;
@@ -73,11 +74,20 @@ public final class PnLibraryRuntime {
         }
     }
 
-    public void enabled(double radius) {
+    public void started(double radius, int commands) {
         if (module == null) return;
-        module.getLifecycle().enabled()
-                .ok("Радиус чата", radius + " блоков")
-                .show();
+        MessageBox report = module.getLifecycle().enabled()
+                .ok("Локальный чат", "радиус " + radius + " блоков, глобальный через !")
+                .ok("Команды", commands + " зарегистрировано");
+        optional(report, "PlaceholderAPI", "плейсхолдеры в формате чата");
+        optional(report, "LuckPerms", "префиксы и права");
+        optional(report, "pnBans", "проверка мутов");
+        report.ok("Диагностика", "/pndebug pnchat").show();
+    }
+
+    private void optional(MessageBox report, String plugin, String purpose) {
+        if (owner.getServer().getPluginManager().isPluginEnabled(plugin)) report.ok(plugin, purpose);
+        else report.skip(plugin, "не установлен");
     }
 
     public void close() {
@@ -85,12 +95,19 @@ public final class PnLibraryRuntime {
         module = null;
         if (closing != null && !closing.isClosed()) {
             try {
-                closing.getLifecycle().disabled().show();
+                stoppedOn(closing);
             } catch (RuntimeException failure) {
                 owner.getLogger().log(Level.FINE, "Не удалось вывести сообщение об остановке pnChat", failure);
             }
         }
         closeRegistration();
+    }
+
+    private void stoppedOn(ModuleContext closing) {
+        closing.getLifecycle().disabled()
+                .ok("Чат", "обработка сообщений остановлена")
+                .ok("Диагностика", "/pndebug pnchat")
+                .show();
     }
 
     private void closeRegistration() {
