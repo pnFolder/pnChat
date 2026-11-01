@@ -82,7 +82,7 @@ public final class PnLibraryRuntime {
         optional(report, "PlaceholderAPI", "плейсхолдеры в формате чата");
         optional(report, "LuckPerms", "префиксы и права");
         optional(report, "pnBans", "проверка мутов");
-        report.ok("Диагностика", "/pndebug pnchat").show();
+        report.ok("Диагностика", "/pn debug pnchat").show();
     }
 
     private void optional(MessageBox report, String plugin, String purpose) {
@@ -106,7 +106,7 @@ public final class PnLibraryRuntime {
     private void stoppedOn(ModuleContext closing) {
         closing.getLifecycle().disabled()
                 .ok("Чат", "обработка сообщений остановлена")
-                .ok("Диагностика", "/pndebug pnchat")
+                .ok("Диагностика", "/pn debug pnchat")
                 .show();
     }
 
