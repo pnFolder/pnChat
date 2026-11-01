@@ -1,5 +1,6 @@
 package ru.privatenull.chat;
 
+import ru.privatenull.integration.Log;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -74,7 +75,7 @@ public class ChatStyleService {
         try {
             config.save(file);
         } catch (IOException exception) {
-            plugin.getLogger().warning("Не удалось сохранить стили чата: " + exception.getMessage());
+            Log.error("Не удалось сохранить стили чата", exception);
         }
     }
 }

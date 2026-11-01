@@ -1,5 +1,6 @@
 package ru.privatenull.chat;
 
+import ru.privatenull.integration.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import ru.privatenull.pnChatPlugin;
@@ -88,7 +89,7 @@ public class ChatModerationService {
                 }
             }
         } catch (Exception ex) {
-            plugin.getLogger().warning("Не удалось прочитать " + fileName + ": " + ex.getMessage());
+            Log.error("Не удалось прочитать " + fileName + "", ex);
         }
 
         return lines;

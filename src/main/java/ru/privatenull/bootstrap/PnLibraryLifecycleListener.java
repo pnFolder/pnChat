@@ -1,5 +1,6 @@
 package ru.privatenull.bootstrap;
 
+import ru.privatenull.integration.Log;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,7 +19,7 @@ public final class PnLibraryLifecycleListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisable(PluginDisableEvent event) {
         if (!event.getPlugin().getName().equalsIgnoreCase("pnLibrary") || !plugin.isEnabled()) return;
-        plugin.getLogger().warning("pnLibrary отключается; pnChat будет безопасно остановлен первым.");
+        Log.warning("pnLibrary отключается; pnChat будет безопасно остановлен первым.");
         plugin.getServer().getPluginManager().disablePlugin(plugin);
     }
 }
