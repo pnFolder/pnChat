@@ -1,6 +1,7 @@
 package ru.privatenull.integration;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.pnfolder.pnlibrary.api.commands.CommandDefinition;
 import org.pnfolder.pnlibrary.api.diagnostics.DiagnosticConfiguration;
 import org.pnfolder.pnlibrary.api.diagnostics.DiagnosticContainer;
 import org.pnfolder.pnlibrary.api.logging.MessageBox;
@@ -69,10 +70,18 @@ public final class PnLibraryRuntime {
                             .automaticDownload(false)
                             .artifact("(?i)^pnChat-[0-9].*\\.jar$", 21)));
             Log.bind(owner, module);
+            Tasks.bind(module);
+            Cooldowns.bind(module);
         } catch (RuntimeException failure) {
             closeRegistration();
             throw failure;
         }
+    }
+
+    /** Регистрирует команду в pnLibrary; она снимается вместе с модулем. */
+    public void registerCommand(CommandDefinition command) {
+        if (module == null) throw new IllegalStateException("pnChat не зарегистрирован в pnLibrary");
+        module.registerCommand(command);
     }
 
     public void started(double radius, int commands) {
@@ -113,6 +122,8 @@ public final class PnLibraryRuntime {
 
     private void closeRegistration() {
         Log.unbind();
+        Tasks.unbind();
+        Cooldowns.unbind();
         PluginRegistration closing = registration;
         registration = null;
         if (closing != null && !closing.isClosed()) closing.close();

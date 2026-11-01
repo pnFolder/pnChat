@@ -1,5 +1,7 @@
 package ru.privatenull.chat;
 
+import ru.privatenull.integration.Cooldowns;
+import ru.privatenull.integration.Tasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
@@ -23,7 +25,6 @@ public class ChatFormatter {
 
     private final pnChatPlugin plugin;
     private final ChatStyleService styleService;
-    private final Map<UUID, Long> mentionSoundCooldown = new ConcurrentHashMap<>();
 
     private String localFormat;
     private String globalFormat;
@@ -254,15 +255,11 @@ public class ChatFormatter {
             return;
         }
 
-        long now = System.currentTimeMillis();
-        Long last = mentionSoundCooldown.get(target.getUniqueId());
-        if (last != null && now - last < mentionSoundCooldownMs) {
+        if (!Cooldowns.acquire(target.getUniqueId(), "mention-sound", mentionSoundCooldownMs)) {
             return;
         }
 
-        mentionSoundCooldown.put(target.getUniqueId(), now);
-
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Tasks.sync(() -> {
             if (!target.isOnline()) {
                 return;
             }

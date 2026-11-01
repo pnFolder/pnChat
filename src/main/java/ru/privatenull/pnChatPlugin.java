@@ -7,14 +7,13 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pnfolder.pnlibrary.bukkit.bootstrap.PnLibraryBootstrap;
 import ru.privatenull.chat.AdminChatService;
-import ru.privatenull.chat.ChatCommandExecutor;
 import ru.privatenull.chat.ChatFormatter;
 import ru.privatenull.chat.ChatListener;
 import ru.privatenull.chat.ChatMessageService;
 import ru.privatenull.chat.ChatModerationService;
 import ru.privatenull.chat.ChatStyleCommandExecutor;
 import ru.privatenull.chat.ChatStyleService;
-import ru.privatenull.chat.ChatTabCompleter;
+import ru.privatenull.chat.PnChatCommand;
 import ru.privatenull.bootstrap.PnLibraryLifecycleListener;
 import ru.privatenull.integration.PnLibraryRuntime;
 
@@ -74,9 +73,7 @@ public final class pnChatPlugin extends JavaPlugin {
         messageService = new ChatMessageService(this, formatter);
         adminChatService = new AdminChatService(this);
 
-        PluginCommand mainCommand = requireCommand("pnchat");
-        mainCommand.setExecutor(new ChatCommandExecutor(this, messageService, adminChatService));
-        mainCommand.setTabCompleter(new ChatTabCompleter());
+        pnRuntime.registerCommand(PnChatCommand.create(this, adminChatService));
         ChatStyleCommandExecutor styleCommands = new ChatStyleCommandExecutor(this, styleService);
         registerStyleCommand("chatcolor", styleCommands);
         registerStyleCommand("chatfont", styleCommands);

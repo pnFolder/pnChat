@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import ru.privatenull.integration.Tasks;
 import ru.privatenull.pnChatPlugin;
 
 public class ChatListener implements Listener {
@@ -53,18 +54,15 @@ public class ChatListener implements Listener {
 
         if (cleaned.startsWith("!")) {
             String globalMessage = cleaned.substring(1).trim();
-            plugin.getServer().getScheduler().runTask(plugin,
-                    () -> messageService.dispatchGlobalChat(null, player, globalMessage));
+            Tasks.sync(() -> messageService.dispatchGlobalChat(null, player, globalMessage));
             return;
         }
 
         if (adminChatService.isAdminChatEnabled(player)) {
-            plugin.getServer().getScheduler().runTask(plugin,
-                    () -> messageService.dispatchAdminChat(null, player, cleaned));
+            Tasks.sync(() -> messageService.dispatchAdminChat(null, player, cleaned));
             return;
         }
 
-        plugin.getServer().getScheduler().runTask(plugin,
-                () -> messageService.dispatchLocalChat(null, player, cleaned));
+        Tasks.sync(() -> messageService.dispatchLocalChat(null, player, cleaned));
     }
 }
