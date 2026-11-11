@@ -3,29 +3,6 @@
   "product": "pnchat",
   "releases": [
     {
-      "version": "1.1.1",
-      "channel": "stable",
-      "description": "Новая ссылка поддержки в Discord.",
-      "changelogUrl": "https://github.com/PnFolder/pnChat/blob/main/.pnlibrary/changelogs/1.1.1.md",
-      "publishedAt": "2026-11-10T21:05:17Z",
-      "api": {
-        "minimum": 1,
-        "maximum": 1
-      },
-      "artifacts": [
-        {
-          "file": "pnChat-1.1.1.jar",
-          "platform": "BUKKIT",
-          "java": {
-            "minimum": 21
-          },
-          "url": "https://github.com/PnFolder/pnChat/releases/download/v1.1.1/pnChat-1.1.1.jar",
-          "sha256": "628a8f1d93fc1add3ddb4d71a8832b59c6a2445a7dea1f58e366ff289f2f83d2",
-          "size": 431288
-        }
-      ]
-    },
-    {
       "version": "1.1.0",
       "channel": "stable",
       "description": "Подключение к pnLibrary 0.0.1-dev.6: обновления, диагностика, метрики и единый журнал.",
