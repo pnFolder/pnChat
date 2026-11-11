@@ -23,7 +23,7 @@ import java.util.logging.Level;
 
 public final class pnChatPlugin extends JavaPlugin {
 
-    public static final String SUPPORT_DISCORD = "https://discord.gg/jfjxY6Q57";
+    public static final String SUPPORT_DISCORD = "https://discord.gg/rSxZAVW7uC";
 
     private ChatMessageService messageService;
     private ChatFormatter formatter;
