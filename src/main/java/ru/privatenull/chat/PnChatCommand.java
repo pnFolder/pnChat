@@ -4,11 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.pnfolder.pnlibrary.api.commands.BadUsage;
+import org.pnfolder.pnlibrary.api.commands.error.BadUsage;
 import org.pnfolder.pnlibrary.api.commands.CommandContext;
-import org.pnfolder.pnlibrary.api.commands.CommandDefinition;
-import org.pnfolder.pnlibrary.api.commands.NoPermission;
-import org.pnfolder.pnlibrary.api.commands.PlayerOnly;
+import org.pnfolder.pnlibrary.api.commands.definition.CommandDefinition;
+import org.pnfolder.pnlibrary.api.commands.error.NoPermission;
+import org.pnfolder.pnlibrary.api.commands.error.PlayerOnly;
 import ru.privatenull.pnChatPlugin;
 
 import java.util.UUID;
