@@ -3,6 +3,29 @@
   "product": "pnchat",
   "releases": [
     {
+      "version": "1.2.0",
+      "channel": "stable",
+      "description": "Переход на pnLibrary 0.1.0-dev.6 (API 2): нужна новая библиотека.",
+      "changelogUrl": "https://github.com/PnFolder/pnChat/blob/main/.pnlibrary/changelogs/1.2.0.md",
+      "publishedAt": "2026-11-21T15:49:57Z",
+      "api": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "artifacts": [
+        {
+          "file": "pnChat-1.2.0.jar",
+          "platform": "BUKKIT",
+          "java": {
+            "minimum": 21
+          },
+          "url": "https://github.com/PnFolder/pnChat/releases/download/v1.2.0/pnChat-1.2.0.jar",
+          "sha256": "53ee1b02ce440d35d0ca2546dbe62c1db1e0d979b7909838672235d03b0b3060",
+          "size": 431544
+        }
+      ]
+    },
+    {
       "version": "1.1.0",
       "channel": "stable",
       "description": "Подключение к pnLibrary 0.0.1-dev.6: обновления, диагностика, метрики и единый журнал.",
