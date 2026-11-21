@@ -20,7 +20,7 @@ import java.util.logging.Level;
 /** Managed pnLibrary integration loaded only after the dependency is enabled. */
 public final class PnLibraryRuntime {
 
-    public static final String MINIMUM_VERSION = "0.0.1-dev.6";
+    public static final String MINIMUM_VERSION = "0.1.0-dev.6";
     private static final String MODULE_ID = "pnchat";
     private static final int BSTATS_PROJECT_ID = 32607;
     private static final String FASTSTATS_TOKEN = "7e4411d995e3aadd6f8f615ead5ba3d8";
